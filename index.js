@@ -2,7 +2,6 @@ require("dotenv").config();
 
 const fs = require("fs");
 const createCsvWriter = require("csv-writer").createObjectCsvWriter;
-const _ = require("lodash");
 const parse = require("csv-parse");
 const clearbit = require("clearbit")(process.env.CLEARBIT_API_KEY);
 
@@ -47,25 +46,9 @@ const nameToDomainAPI = companies => {
 
 // remove duplicate compnaies from list
 const removeDuplicateCompanies = (companies) => {
-  let newCompanyList = [];
-  // loop through each company
-  companies.forEach((company) => {
-    let notRepeated = true;
-    // if its not repeated
-    if (notRepeated) {
-        // add it to the new company list
-        newCompanyList.push(company);
-      }
-    // loop through each new company
-    newCompanyList.forEach((item) => {
-      // if both companies are equal
-      if (_.isEqual(company, item)) {
-        // its reapeated
-        notRepeated = false;
-      }
-    });
-  });
-
+  // filter out duplicate companies
+  let newCompanyList = companies.filter((item, index) => companies.indexOf(item) === index)
+  // return new list of unique companies
   return newCompanyList;
 }
 
